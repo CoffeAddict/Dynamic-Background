@@ -11,6 +11,7 @@ Now it's easy
 **Basic Syntax:**
 ```javascript
 import dynamicBG from 'dynamic-background'
+
 let colorList = [
     {
         color: 'blue'
@@ -22,5 +23,6 @@ let colorList = [
         color: 'url(https://picsum.photos/200/300)'
     },
 ]
+
 dynamicBG('elementId', colorList, 5 /* Background Stay Time */)
 ```
