@@ -1,36 +1,54 @@
 /* Data */
 let data = []
-let elements = {}
+let element = null // Reference element
+let elements = {} // Created Elements
 let switchBool = true
 
 /* Config */
-let colorStayTime = 30
+let colorStayTime = 10
 let transitionTime = colorStayTime / 10
 
-window.onload = async () => {
-
-    await getData()
+export default async function dinamicBackground (elementId, colorList, stateTime) {
+    data = colorList
+    colorStayTime = stateTime
+    await searchElement(elementId)
+    await createBackgroundElements()
     await getElementsInScreen()
-    await createCSSClasses()
+    await createCSSClasses(elementId, colorList)
     startAnimations()
 }
 
-// GEt data frm JSON File
-function getData () {
+// Search container element
+function searchElement (elementId) {
     return new Promise((resolve, reject) => {
-        var xhttp = new XMLHttpRequest()
-        xhttp.open("GET", "data.json", true)
-        xhttp.send()
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                if (this.status == 200) {
-                    data = JSON.parse(this.response).data.backgroundsList
-                    resolve()
-                }
-                if (this.status != 200) {
-                    reject('Error loading file data.json')
-                }
-            }
+        try {
+            element = document.getElementById(elementId)
+            resolve()
+        } catch {
+            reject('Cannot find Element: ' + elementId)
+        }
+    })
+}
+
+// Create background to render colors
+function createBackgroundElements () {
+    return new Promise((resolve, reject) => {
+        try {
+            if (!element) reject('Cannot find Element')
+
+            let div1 = document.createElement('div')
+            let div2 = document.createElement('div')
+
+            div1.setAttribute('class', '__background')
+            div1.setAttribute('id', '__first-background')
+            div2.setAttribute('class', '__background')
+            div2.setAttribute('id', '__second-background')
+            element.appendChild(div1)
+            element.appendChild(div2)
+
+            resolve()
+        } catch {
+            reject('Error trying to create background elements')
         }
     })
 }
@@ -38,26 +56,39 @@ function getData () {
 // Get backgrounds elements in screen
 function getElementsInScreen () {
     return new Promise((resolve, reject) => {
-        elements.firstBackground = document.getElementById('first-background')
-        elements.secondBackground = document.getElementById('second-background')
+        elements.firstBackground = document.getElementById('__first-background')
+        elements.secondBackground = document.getElementById('__second-background')
         if (elements.firstBackground && elements.secondBackground) resolve()
         if (!elements.firstBackground || !elements.secondBackground) reject('Error finding elements')
     })
 }
 
 // Creates CSS Classes from JSON Data
-async function createCSSClasses () {
+function createCSSClasses (elementId, colorList) {
     return new Promise((resolve, reject) => {
         try {
             let style = document.createElement('style')
             style.type = 'text/css'
-
-            data.forEach((styles, index, array) => {
-                style.innerHTML += `.__background_${index} { ${styles.color} !important }`
-                style.innerHTML += `.__background_${index} { ${styles.color} !important }`
-                // console.log(checkBestTextColor('#ffffff'))
+            colorList.forEach((styles, index, array) => {
+                style.innerHTML += `.__background_${index} { background: ${styles.color} !important; }`
             })
-            style.innerHTML += `.background { transition: opacity ${transitionTime}s linear; }`
+            style.innerHTML += `
+                #${elementId} {
+                    position: relative;
+                }
+                .__background {
+                    transition: opacity ${transitionTime}s linear;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    position: absolute;
+                    opacity: 0;
+                }
+                .__background.show {
+                    opacity: 1 !important;
+                }
+            `
             document.getElementsByTagName('head')[0].appendChild(style);
             resolve()
         } catch {
@@ -65,7 +96,6 @@ async function createCSSClasses () {
         }
     })
 }
-
 
 function startAnimations () {
     let {firstBackground} = elements
@@ -89,20 +119,17 @@ function backgroundsLoop () {
 
     // Set a new color in the hidden background
     second.className += ` __background_${getRandomBG()}`
-    console.log('set color on hidden')
 
     // Wait stay color time to switch between colors
     setTimeout(() => {
         first.className = first.className.replace('show', '')
         second.className += ` show`
-        console.log('hide/show')
 
         // Remove color from the hidden one, change boolean & call loop again
         setTimeout(() => {
-            first.className = 'background'
+            first.className = '__background'
             switchBool = !switchBool
             backgroundsLoop()
-            console.log('start loop again')
         }, transitionTime * 1000)
 
     }, (colorStayTime) * 1000)
