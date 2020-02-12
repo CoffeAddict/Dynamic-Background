@@ -1,19 +1,19 @@
 {
-  "name": "dinamic-background",
+  "name": "dynamic-background",
   "version": "0.1.0",
-  "description": "Change background from elements dinamically, even with images or gradients",
+  "description": "Change background from elements dynamically, even with images or gradients",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CoffeAddict/Dinamic-Background.git"
+    "url": "git+https://github.com/CoffeAddict/Dynamic-Background.git"
   },
   "author": "CoffeAddict",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CoffeAddict/Dinamic-Background/issues"
+    "url": "https://github.com/CoffeAddict/Dynamic-Background/issues"
   },
-  "homepage": "https://github.com/CoffeAddict/Dinamic-Background#readme"
+  "homepage": "https://github.com/CoffeAddict/Dynamic-Background#readme"
 }
