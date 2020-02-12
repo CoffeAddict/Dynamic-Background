@@ -22,4 +22,5 @@ let colorList = [
         color: 'url(https://picsum.photos/200/300)'
     },
 ]
+dynamicBG('elementId', colorList, 5 /* Background Stay Time */)
 ```
