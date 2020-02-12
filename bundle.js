@@ -1,7 +1,8 @@
-(function (factory) {
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    factory();
-}((function () { 'use strict';
+    (global = global || self, global.DynamicBackground = factory());
+}(this, (function () { 'use strict';
 
     /* Data */
     let data = [];
@@ -13,7 +14,7 @@
     let colorStayTime = 10;
     let transitionTime = colorStayTime / 10;
 
-    module.exports = async function (elementId, colorList, stateTime) {
+    async function main (elementId, colorList, stateTime) {
         data = colorList;
         colorStayTime = stateTime;
         await searchElement(elementId);
@@ -21,7 +22,7 @@
         await getElementsInScreen();
         await createCSSClasses(elementId, colorList);
         startAnimations();
-    };
+    }
 
     // Search container element
     function searchElement (elementId) {
@@ -145,5 +146,7 @@
     function getRandomBG () {
         return parseInt(Math.random() * data.length)
     }
+
+    return main;
 
 })));
