@@ -1,4 +1,4 @@
-# Dinamic-Background
+# Dynamic-Background
 
 Transition between backgrounds.
 

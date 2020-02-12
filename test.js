@@ -1,4 +1,4 @@
-import dinamicBackground from './main.js'
+import dynamicBackground from './main.js'
 
 let colorList = [
     {
@@ -33,4 +33,4 @@ let colorList = [
     }
 ]
 
-dinamicBackground('main-container', colorList, 5)
+dynamicBackground('main-container', colorList, 5)
