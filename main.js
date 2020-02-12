@@ -8,7 +8,7 @@ let switchBool = true
 let colorStayTime = 10
 let transitionTime = colorStayTime / 10
 
-export default async function dinamicBackground (elementId, colorList, stateTime) {
+export default async function (elementId, colorList, stateTime) {
     data = colorList
     colorStayTime = stateTime
     await searchElement(elementId)
